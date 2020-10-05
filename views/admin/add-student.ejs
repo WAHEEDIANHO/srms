@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body>
+        <div class="container-fluid">
+            <%- include('partials/header') %>
+                <section class="row">
+                    <%- include('partials/nav') %>
+
+                        <div class="content col-md-9 col-12 p-0 ">
+                            <div class="w-100 p-2 bg-white mt-2 mb-2">
+                                <h3 class=" modal-header">Student Admission</h3>
+                                <div class="breadcrumb bg-transparent p-0">
+                                    <div class="breadcrumb-item">Home</div>
+                                    <div class="breadcrumb-item">Students</div>
+                                    <div class="breadcrumb-item">Student Admission</div>
+                                </div>
+                            </div>
+
+                            <div class="card m-2 p-3">
+                                <h5>Fill the student info</h5>
+                                <%- include('partials/flash') %>
+                                    <h4 id="err">Fill the corresponding value below</h4>
+
+                                    <form action="" method="POST" class="">
+                                        <div class="form-row m-3">
+                                            <label for="fname" class="col-2">Full Name: </label>
+                                            <div class="col-10">
+                                                <input type="text" name="fname" id="fname" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="rollId" class="col-2">Roll ID: </label>
+                                            <div class="col-10">
+                                                <input type="text" name="rollId" id="rollId" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="Email" class="col-2">Email: </label>
+                                            <div class="col-10">
+                                                <input type="email" name="email" id="email" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="gender" class="col-2">Gender: </label>
+                                            <div class="col-10">
+                                                <input type="radio" name="gender" id="gender" value="male">Male
+                                                <input type="radio" name="gender" id="gender" value="female">Female
+                                                <input type="radio" name="gender" id="gender" value="other">Other
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="class" class="col-2">Class: </label>
+                                            <div class="col-10">
+                                                <select name="class" id="sclass" class="form-control">
+                                                <option value="">Select class</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row m-3">
+                                            <label for="dob" class="col-2">DOB: </label>
+                                            <div class="col-10">
+                                                <input type="date" name="dob" id="dob" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-success float-right">Add</button>
+
+                                    </form>
+                            </div>
+                        </div>
+                </section>
+        </div>
+
+        <script src="../../public/lib/jquery//jquery.min.js "></script>
+        <script src="../../public/lib/bootstrap/js/bootstrap.min.js "></script>
+        <script src="../../public/js/admin.js"></script>
+
+        <script>
+            $(document).ready(() => {
+                $('.btn').on('click', function() {
+                    let fname = $('#fname').val().toString().toUpperCase(),
+                        rollId = $('#rollId').val(),
+                        email = $('#email').val(),
+                        gender = $('#gender').val(),
+                        sclass = $('#sclass').val(),
+                        dob = $('#dob').val();
+
+                    if ((fname.length && rollId.length && email.length && gender.length && sclass.gender && dob.length) === 0) {
+                        $('#err').css({
+                            display: "block",
+                        })
+                    } else {
+                        $.post('/admin/add-student', {
+                            fname: fname,
+                            rollId: rollId,
+                            email: email,
+                            gender: gender,
+                            sclass: sclass,
+                            dob: dob
+                        }, (data) => {
+                            $('.flash').css({
+                                display: 'flex'
+                            })
+                            console.log(data)
+                            $('#sname').val("")
+                            $('#scode').val("")
+                        })
+                    }
+
+                })
+
+                $('input').on('focus', () => {
+                    if ($('#err').css('display') != "none" || $('.alert').css('display') != "none") {
+                        console.log('err display')
+                        $('#err').hide()
+                        $('.alert').hide()
+                    }
+                })
+            })
+        </script>
+    </body>
+
+</html>

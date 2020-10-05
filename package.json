@@ -1,0 +1,23 @@
+{
+    "name": "srm",
+    "version": "1.0.0",
+    "description": "Student Result Management",
+    "main": "app.js",
+    "scripts": {
+        "start": "node src/app.js"
+    },
+    "keywords": [
+        "Result",
+        "Management",
+        "System"
+    ],
+    "author": "Ogidi Safiu Waheed",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cookies": "^0.8.0",
+        "ejs": "^3.1.5",
+        "express": "^4.17.1",
+        "mongoose": "^5.10.2"
+    }
+}
