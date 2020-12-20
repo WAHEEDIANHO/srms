@@ -17,8 +17,22 @@
                                     <div class="breadcrumb-item">Student Admission</div>
                                 </div>
                             </div>
+                            <div class="card m-2 p-3">
+                                <div class=" modal-header mb-2">
+                                    <h5>For already typed Students</h5>
+                                    <a href="../../public/template/file-1603218526224.xlsx" class="btn btn-success" download>Download Template</a>
+                                </div>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="feedback">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                    <strong>FIle upload successfully</strong>
+                                </div>
+                                <form action="/admin/add-student" class="dropzone" id="upload-widget" enctype="multipart/form-data"></form>
+                            </div>
 
                             <div class="card m-2 p-3">
+
                                 <h5>Fill the student info</h5>
                                 <%- include('partials/flash') %>
                                     <h4 id="err">Fill the corresponding value below</h4>
@@ -73,7 +87,7 @@
                                             </div>
                                         </div>
 
-                                        <button type="button" class="btn btn-success float-right">Add</button>
+                                        <button type="button" class="btn btn-success float-right" id="formSubmit">Add</button>
 
                                     </form>
                             </div>
@@ -83,11 +97,12 @@
 
         <script src="../../public/lib/jquery//jquery.min.js "></script>
         <script src="../../public/lib/bootstrap/js/bootstrap.min.js "></script>
+        <script src="../../public/lib/dropzone-5.7.0/dist/dropzone.js"></script>
         <script src="../../public/js/admin.js"></script>
 
         <script>
             $(document).ready(() => {
-                $('.btn').on('click', function() {
+                $('#formSubmit').on('click', function() {
                     let fname = $('#fname').val().toString().toUpperCase(),
                         rollId = $('#rollId').val(),
                         email = $('#email').val(),
@@ -95,7 +110,7 @@
                         sclass = $('#sclass').val(),
                         dob = $('#dob').val();
 
-                    if ((fname.length && rollId.length && email.length && gender.length && sclass.gender && dob.length) === 0) {
+                    if ((fname.length && rollId.length && email.length && gender.length && sclass.length && dob.length) === 0) {
                         $('#err').css({
                             display: "block",
                         })
@@ -112,8 +127,11 @@
                                 display: 'flex'
                             })
                             console.log(data)
-                            $('#sname').val("")
-                            $('#scode').val("")
+                            $('#fname').val("")
+                            $('#rollId').val("")
+                            $('#email').val("")
+                            $('#sclass').val("")
+                            $('#dob').val("")
                         })
                     }
 
@@ -127,6 +145,24 @@
                     }
                 })
             })
+
+            Dropzone.options.uploadWidget = {
+                    maxFiles: 1,
+                    dictDefaultMessage: 'Upload ur xlsx file here',
+                    acceptedFiles: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    init: function() {
+                        this.on("success", function(file) {
+                            // alert("Added file");
+                            console.log(file)
+                            this.removeFile(file)
+                            $('#feedback').removeAttr('id')
+                        });
+                    }
+                }
+                // $('#dn').on('click', '[download]', function(e) {
+                //     e.preventDefault();
+                //     download($(this).attr('href'));
+                // });
         </script>
     </body>
 

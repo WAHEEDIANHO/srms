@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../public/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../public/lib/dt/datatables-bs4/css/dataTables.bootstrap4.css">
+    <title>Result Checker</title>
+</head>
+
+<body style="background-color: #eee;">
+    <h4 class="text-center bg-white p-4 mb-3">RESULT MANAGEMENT SYSTEM</h4>
+    <div class="container">
+        <div class="card">
+
+            <% if (student.length != 0) { %>
+                <div class="card-header bg-transparent">
+
+                    <div class="row p-2">
+                        <h5 class="col-4">Student Name:</h5>
+                        <p class=" col-8">
+                            <%= student.fname %>
+                        </p>
+                    </div>
+
+                    <div class="row p-2">
+                        <h5 class="col-4">Student Roll Id:</h5>
+                        <p class=" col-8">
+                            <%= student.rollId %>
+                        </p>
+                    </div>
+
+                    <div class="row p-2">
+                        <h5 class="col-4">Student Class:</h5>
+                        <p class=" col-8">
+                            <%= student.sclass %>
+                        </p>
+                    </div>
+                </div>
+                <div class=" card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <th>#</th>
+                            <th>Subject</th>
+                            <th>Score</th>
+                        </thead>
+                        <tbody>
+                            <% student.result.forEach(subject => { %>
+                                <% const pos = student.result.indexOf(subject) %>
+                                    <tr>
+                                        <td>
+                                            <%= pos + 1 %>
+                                        </td>
+                                        <td>
+                                            <%= subject.subject %>
+                                        </td>
+                                        <td>
+                                            <%= subject.score %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <% } else{ %>
+
+                    <% } %>
+
+        </div>
+    </div>
+
+
+    <script src="../public/lib/jquery//jquery.min.js "></script>
+    <script src="../public/lib/bootstrap/js/bootstrap.min.js "></script>
+
+    <!-- datatable -->
+    <script src="../public/lib/dt/datatables/jquery.dataTables.js"></script>
+    <script src="../public/lib/dt/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <script src="../public/lib/dt/datatables-responsive/js/dataTables.responsive.js"></script>
+    <script>
+        $(function() {
+            $('table').DataTable({
+                paging: false,
+                lengthChange: false,
+                searching: false,
+                ordering: false,
+                info: false,
+                autoWidth: false,
+                responsive: true,
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -10,26 +10,41 @@
 
                         <div class="content col-md-9 col-12 p-0 ">
                             <div class="w-100 p-2 bg-white mt-2 mb-2">
-                                <h3 class=" modal-header">Student Admission</h3>
+                                <h3 class=" modal-header">Declare Result </h3>
                                 <div class="breadcrumb bg-transparent p-0">
                                     <div class="breadcrumb-item">Home</div>
                                     <div class="breadcrumb-item">Result</div>
                                     <div class="breadcrumb-item">Add Result</div>
                                 </div>
                             </div>
+                            <div class="card m-2 p-3">
+                                <div class=" modal-header mb-2">
+                                    <h5>For already typed Results</h5>
+                                    <a href="../../public/template/file-1603218526224.xlsx" class="btn btn-success" download>Download Template</a>
+                                </div>
+
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="feedback">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                    <strong>FIle upload successfully</strong>
+                                </div>
+                                <form action="/admin/add-result" class="dropzone" id="upload-widget" enctype="multipart/form-data"></form>
+                            </div>
 
                             <div class="card m-2 p-3">
+
                                 <h5>Declare a Result</h5>
                                 <%- include('partials/flash') %>
                                     <h4 id="err">Fill the corresponding value below</h4>
 
                                     <form action="" method="POST" class="">
                                         <div class="form-row m-3">
-                                            <label for="classes" class="col-2">Class: </label>
+                                            <label for="sclass" class="col-2">Class: </label>
                                             <div class="col-10">
 
 
-                                                <select name="classes" id="classes" class="form-control">
+                                                <select name="sclass" id="sclass" class="form-control">
                                                     <option value="">Select class</option>
                                                     <% classes.forEach(element => { %>
                                                         <option value="<%= element.cname %>"> <%= element.cname %> </option>
@@ -53,9 +68,9 @@
                                         <div class="form-row m-3">
                                             <div class="col-7">
                                                 <div class="row">
-                                                    <label for="classes" class="col-2">Subjet: </label>
+                                                    <label for="subject" class="col-2">Subjet: </label>
                                                     <div class="col-10">
-                                                        <select name="classes" id="classes" class="form-control">
+                                                        <select name="subject" id="subject" class="form-control">
                                                              <option value="">Select class</option>
                                                              <% subjects.forEach(element => { %>
                                                                 <option value="<%= element.sname %>"> <%= element.sname %> </option>
@@ -68,9 +83,9 @@
 
                                             <div class="col-5">
                                                 <div class="row">
-                                                    <label for="classes" class="col-4 text-center">Score: </label>
+                                                    <label for="score" class="col-4 text-center">Score: </label>
                                                     <div class="col-8">
-                                                        <input type="text" class=form-control>
+                                                        <input type="text" class='form-control' name='score' id="score">
                                                     </div>
                                                 </div>
                                             </div>
@@ -78,7 +93,7 @@
                                         </div>
 
 
-                                        <button type="button" class="btn btn-success float-right">Add</button>
+                                        <button type="button" class="btn btn-success float-right" id="formSubmit">Add</button>
 
                                     </form>
                             </div>
@@ -88,52 +103,73 @@
 
         <script src="../../public/lib/jquery//jquery.min.js "></script>
         <script src="../../public/lib/bootstrap/js/bootstrap.min.js "></script>
+        <script src="../../public/lib/dropzone-5.7.0/dist/dropzone.js"></script>
         <script src="../../public/js/admin.js"></script>
-
 
         <script>
             // console.log(students)
             $(document).ready(() => {
-                //     $('.btn').on('click', function() {
-                //         let fname = $('#fname').val().toString().toUpperCase(),
-                //             rollId = $('#rollId').val(),
-                //             email = $('#email').val(),
-                //             gender = $('#gender').val(),
-                //             sclass = $('#sclass').val(),
-                //             dob = $('#dob').val();
+                $('#formSubmit').on('click', function() {
+                    let sclass = $('#sclass').val().toString().split(" ")[1]
+                    sname = $('#sname').val(),
+                        subject = $('#subject').val(),
+                        score = $('#score').val();
 
-                //         if ((fname.length && rollId.length && email.length && gender.length && sclass.gender && dob.length) === 0) {
-                //             $('#err').css({
-                //                 display: "block",
-                //             })
-                //         } else {
-                //             $.post('/admin/add-student', {
-                //                 fname: fname,
-                //                 rollId: rollId,
-                //                 email: email,
-                //                 gender: gender,
-                //                 sclass: sclass,
-                //                 dob: dob
-                //             }, (data) => {
-                //                 $('.flash').css({
-                //                     display: 'flex'
-                //                 })
-                //                 console.log(data)
-                //                 $('#sname').val("")
-                //                 $('#scode').val("")
-                //             })
-                //         }
 
-                //     })
+                    if ((sclass.length && sname.length && subject.length && score.length) === 0) {
+                        $('#err').css({
+                            display: "block",
+                        })
+                    } else {
+                        $.post('/admin/add-result', {
+                            sclass: sclass,
+                            sname: sname,
+                            subject: subject,
+                            score: score,
 
-                //     $('input').on('focus', () => {
-                //         if ($('#err').css('display') != "none" || $('.alert').css('display') != "none") {
-                //             console.log('err display')
-                //             $('#err').hide()
-                //             $('.alert').hide()
-                //         }
-                //     })
+                        }, (data) => {
+                            $('.flash').css({
+                                display: 'flex'
+                            })
+                            console.log(data)
+                            $('#sclass').val("");
+                            $('#sname').val("");
+                            $('#subject').val("");
+                            $('#score').val("");
+                        })
+                    }
+
+                })
+
+                $('input').on('focus', () => {
+                    if ($('#err').css('display') != "none" || $('.alert').css('display') != "none") {
+                        console.log('err display')
+                        $('#err').hide()
+                        $('.alert').hide()
+                    }
+                })
             })
+
+            //-----------------DropZone------------------------
+            Dropzone.options.uploadWidget = {
+                    maxFiles: 1,
+                    dictDefaultMessage: 'Upload ur xlsx file here',
+                    acceptedFiles: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    init: function() {
+                        this.on("success", function(file) {
+                            // alert("Added file");
+                            this.removeFile(file)
+                            $('#feedback').removeAttr('id')
+                            console.log(file)
+                        });
+                    }
+                }
+                //--------------------------------------------------
+
+            // $(".custom-file-input").on("change", function() {
+            //     var fileName = $(this).val().split("\\").pop();
+            //     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            // });
         </script>
     </body>
 

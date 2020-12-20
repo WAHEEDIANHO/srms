@@ -41,14 +41,12 @@ const studentSchema = new Schema({
         required: true,
     },
     rollId: {
-        type: Number,
+        type: String,
         unique: true,
         required: true,
     },
     email: {
-        type: String,
-        unique: true,
-        required: true,
+        type: String
     },
     gender: {
         type: String,

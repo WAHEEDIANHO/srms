@@ -38,6 +38,10 @@ section a {
     color: red
 }
 
+#feedback {
+    display: none;
+}
+
 @media (min-width: 775px) {
     .navPanel {
         height: 90vh;
