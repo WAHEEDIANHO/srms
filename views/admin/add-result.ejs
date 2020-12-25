@@ -47,7 +47,7 @@
                                                 <select name="sclass" id="sclass" class="form-control">
                                                     <option value="">Select class</option>
                                                     <% classes.forEach(element => { %>
-                                                        <option value="<%= element.cname %>"> <%= element.cname %> </option>
+                                                        <option value="<%= element.cnameNum %>" class="rmd"> <%= element.cname %> </option>
                                                         <% }) %>
                                                 </select>
                                             </div>
@@ -57,10 +57,7 @@
                                             <label for="sname" class="col-2">Student Name: </label>
                                             <div class="col-10">
                                                 <select name="sname" id="sname" class="form-control">
-                                                    <option value="">Select class</option>
-                                                    <% students.forEach(element => { %>
-                                                        <option value="<%= element.fname %>"> <%= element.fname %> </option>
-                                                        <% }) %>
+                                                    <option value="">Select Student</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -71,7 +68,7 @@
                                                     <label for="subject" class="col-2">Subjet: </label>
                                                     <div class="col-10">
                                                         <select name="subject" id="subject" class="form-control">
-                                                             <option value="">Select class</option>
+                                                             <option value="">Select Subject</option>
                                                              <% subjects.forEach(element => { %>
                                                                 <option value="<%= element.sname %>"> <%= element.sname %> </option>
                                                                 <% }) %>
@@ -85,7 +82,7 @@
                                                 <div class="row">
                                                     <label for="score" class="col-4 text-center">Score: </label>
                                                     <div class="col-8">
-                                                        <input type="text" class='form-control' name='score' id="score">
+                                                        <input type="number" class='form-control' name='score' id="score">
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,18 +102,29 @@
         <script src="../../public/lib/bootstrap/js/bootstrap.min.js "></script>
         <script src="../../public/lib/dropzone-5.7.0/dist/dropzone.js"></script>
         <script src="../../public/js/admin.js"></script>
-
+        <script src="/public/js/ajax.js"></script>
         <script>
             // console.log(students)
             $(document).ready(() => {
+
+                $("select, input").on('focus', () => {
+                    if ($('#err').css('display') != "none" || $('.flash').css('display') != "none") {
+                        console.log('err display')
+                        $('#err').hide()
+                        $('.alert').hide()
+                    }
+                })
                 $('#formSubmit').on('click', function() {
-                    let sclass = $('#sclass').val().toString().split(" ")[1]
+                    let sclass = $('#sclass').val()
                     sname = $('#sname').val(),
                         subject = $('#subject').val(),
-                        score = $('#score').val();
-
-
-                    if ((sclass.length && sname.length && subject.length && score.length) === 0) {
+                        score = $('#score').val(),
+                        flash = $('.flash')
+                    console.log(typeof score)
+                    if ((sclass.length && 
+                        sname.length && 
+                        subject.length && 
+                        score.length) === 0) {
                         $('#err').css({
                             display: "block",
                         })
@@ -128,9 +136,19 @@
                             score: score,
 
                         }, (data) => {
-                            $('.flash').css({
-                                display: 'flex'
-                            })
+                            const successMessage = `<strong>${subject}<strong/> result for <strong>${sname}<strong/> uploaded successfully`
+                            data.status == 404 ? (
+                                flash.css({
+                                    display: 'flex'
+                                }).removeClass('alert-sucess').addClass('alert-danger') &&
+                                $('#message').html(data.message)
+                            ):(
+                                flash.css({
+                                        display: 'flex'
+                                    }) &&
+                                    $('#message').html(successMessage)
+                            );
+                            
                             console.log(data)
                             $('#sclass').val("");
                             $('#sname').val("");
@@ -138,16 +156,8 @@
                             $('#score').val("");
                         })
                     }
-
                 })
 
-                $('input').on('focus', () => {
-                    if ($('#err').css('display') != "none" || $('.alert').css('display') != "none") {
-                        console.log('err display')
-                        $('#err').hide()
-                        $('.alert').hide()
-                    }
-                })
             })
 
             //-----------------DropZone------------------------
@@ -156,11 +166,11 @@
                     dictDefaultMessage: 'Upload ur xlsx file here',
                     acceptedFiles: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                     init: function() {
-                        this.on("success", function(file) {
+                        this.on("success", function(file, responseText) {
                             // alert("Added file");
                             this.removeFile(file)
                             $('#feedback').removeAttr('id')
-                            console.log(file)
+                            console.log(responseText)
                         });
                     }
                 }

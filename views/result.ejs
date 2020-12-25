@@ -12,32 +12,36 @@
 </head>
 
 <body style="background-color: #eee;">
-    <h4 class="text-center bg-white p-4 mb-3">RESULT MANAGEMENT SYSTEM</h4>
+    
     <div class="container">
-        <div class="card">
+        <div class="card mt-5 mb-5">
+
+            <div class="">
+                <img src="/public/images/header.png" alt="" srcset="" class="w-100" />
+            </div>
 
             <% if (student.length != 0) { %>
                 <div class="card-header bg-transparent">
 
                     <div class="row p-2">
-                        <h5 class="col-4">Student Name:</h5>
-                        <p class=" col-8">
+                        <h6 class="col-4">NAME</h6>
+                        <h5 class=" col-8">
                             <%= student.fname %>
-                        </p>
+                        </h5>
                     </div>
 
                     <div class="row p-2">
-                        <h5 class="col-4">Student Roll Id:</h5>
-                        <p class=" col-8">
+                        <h6 class="col-4">ROLL ID:</h6>
+                        <h5 class=" col-8">
                             <%= student.rollId %>
-                        </p>
+                        </h5>
                     </div>
 
                     <div class="row p-2">
-                        <h5 class="col-4">Student Class:</h5>
-                        <p class=" col-8">
+                        <h6 class="col-4">CLASS:</h6>
+                        <h5 class=" col-8">
                             <%= student.sclass %>
-                        </p>
+                        </h5>
                     </div>
                 </div>
                 <div class=" card-body">
@@ -46,6 +50,7 @@
                             <th>#</th>
                             <th>Subject</th>
                             <th>Score</th>
+                            <th>Grade</th>
                         </thead>
                         <tbody>
                             <% student.result.forEach(subject => { %>
@@ -57,13 +62,62 @@
                                         <td>
                                             <%= subject.subject %>
                                         </td>
-                                        <td>
-                                            <%= subject.score %>
+                                        <td class="text-center">
+                                            <p><%= subject.score %></p>
                                         </td>
+                                        <td class="text-center"><h6><%= subject.grade %></h6></td>
                                     </tr>
                                     <% }) %>
                         </tbody>
+                        <tfoot>
+                            <td colspan="2"><h4 class=" text-center">Total</h4></td>
+                            <td>
+                                <% let Total = 0 %>
+                            <% student.result.forEach(subject => Total = Total + subject.score)%>
+                            <h4><%= Total %></h4>
+
+                            </td>
+                            <td></td>
+                        </tfoot>
                     </table>
+                    <div class="container-fluid footer mt-5">
+                        <div class="d-flex">
+                            <div class="w-50">
+                                <div class="d-flex align-items-end">
+                                    <h6 class="">OVER ALL PERCENTANGE: </h6>
+                                    <div class=" border-dark border-bottom w-50 text-center"><h6 class="">X%</h6></div>
+                                </div>
+                            </div>
+                            <div class="w-50">
+                                <div class="d-flex align-items-end">
+                                    <h6 class="">REMARK: </h6>
+                                    <div class=" border-dark border-bottom w-100"></div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                        <div class="d-flex align-items-end mt-3">
+                            <h6>CLASS TEACHER REMARK: </h6>
+                            <div class="w-100 border-bottom border-dark"></div>
+                        </div>
+                        <div class="d-flex align-items-end pt-4">
+                            <h6>COMMENT: </h6>
+                            <div class="w-100 border-bottom border-dark"></div>
+                        </div>
+
+                        <div class="d-flex mt-5 pt-5">
+                            <div class="border-dark border-top col-4 text-center">
+                                <h5  class="m-0 p-0">Alh. Nurein Moibi</h5>
+                                <p>Propietor</p>
+                            </div>
+                            
+                            <div class="border-dark border-top col-4 offset-4 text-center">
+                                <h5 class=" m-0 p-0">Mrs. Nurein Kafayat</h5>
+                                <p>Principal</p>
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
 
                 <% } else{ %>

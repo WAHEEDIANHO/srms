@@ -54,28 +54,41 @@ app.get("/student/login", student.login);
 app.post("/student/result", student.getResult);
 
 //admin
-app.get("/admin/dashboard", admin.doLogin);
+app.get("/admin/dashboard", authenticate.comfirmUser, admin.doLogin);
 app.post("/admin/dashboard", authenticate.verifyUser, admin.verifyUser);
 app.post("/crateadmin", admin.createAdmin);
 
 //subject
-app.get("/admin/subject", admin.subject);
-app.post("/admin/subject", admin.createSubject);
-app.get("/admin/manage-subject", admin.manageSubjects);
+app.get("/admin/subject", authenticate.comfirmUser, admin.subject);
+app.post("/admin/subject", authenticate.comfirmUser, admin.createSubject);
+app.get(
+  "/admin/manage-subject",
+  authenticate.comfirmUser,
+  admin.manageSubjects
+);
 
 //class
-app.get("/admin/create-class", admin.classCreate);
-app.post("/admin/create-class", admin.doClassCreate);
-app.get("/admin/manage-classes", admin.manageClasses);
+app.get("/admin/create-class", authenticate.comfirmUser, admin.classCreate);
+app.post("/admin/create-class", authenticate.comfirmUser, admin.doClassCreate);
+app.get("/admin/manage-classes", authenticate.comfirmUser, admin.manageClasses);
 
 //student
-app.get("/admin/add-student", admin.studentAdmission);
-app.post("/admin/add-student", admin.dostudentAdmission);
-app.get("/admin/manage-student", admin.manageStudent);
+app.get("/admin/add-student", authenticate.comfirmUser, admin.studentAdmission);
+app.post(
+  "/admin/add-student",
+  authenticate.comfirmUser,
+  admin.dostudentAdmission
+);
+app.get("/admin/manage-student", authenticate.comfirmUser, admin.manageStudent);
 
 //Result
-app.get("/admin/add-result", admin.result);
-app.post("/admin/add-result", admin.addResult);
+app.get("/admin/add-result", authenticate.comfirmUser, admin.result);
+app.post("/admin/add-result", authenticate.comfirmUser, admin.addResult);
 // app.get('/admin/manage-result', admin.manageResult)
+
+//ApI
+app.get("/classes", admin.getClass);
+app.get("/students", admin.getStudent);
+app.get("/students/:sclass", admin.getStudent);
 
 app.listen(port, () => console.log(`Example app listening on ${port} port!`));

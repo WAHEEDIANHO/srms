@@ -47,6 +47,10 @@ passport.deserializeUser((id, done) => {
       console.log(err);
     });
 });
+exports.comfirmUser = (req, res, next) => {
+  console.log(req.user);
+  req.user ? next() : res.end("<h1>You are not authenticated</h1>");
+};
 exports.verifyUser = passport.authenticate("local-login");
 
 // module.exports = passport;

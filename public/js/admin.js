@@ -16,4 +16,6 @@ $(document).ready(function () {
   });
 
   $(".alert").fadeOut(60000);
+
+  //AJAX CALLED TO GET DATA
 });

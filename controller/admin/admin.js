@@ -15,13 +15,7 @@ verifyUser = (req, res) => {
 };
 
 doLogin = (req, res) => {
-  console.log(req.user);
-  console.log("test", req.session);
-  if (req.session.hasOwnProperty("passport")) {
-    res.render("admin/admin");
-  } else {
-    res.end("<h1>You are not authenticated</h1>");
-  }
+  res.render("admin/admin");
 };
 
 createAdmin = (req, res) => {
@@ -48,4 +42,6 @@ module.exports = {
   manageStudent: students.manageStudent,
   result: results.result,
   addResult: results.addResult,
+  getClass: classes.getClass,
+  getStudent: students.getStudents,
 };

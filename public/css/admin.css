@@ -1,50 +1,55 @@
 body {
-    background-color: rgb(236, 234, 234);
+  background-color: rgb(236, 234, 234);
 }
 
 header {
-    box-shadow: 0px 3px 10px #242222;
+  box-shadow: 0px 3px 10px #242222;
 }
 
-.nav-link~ul {
-    display: none;
+.nav-link ~ ul {
+  display: none;
 }
 
-.nav-link~ul li {
-    padding: 5px;
+.nav-link ~ ul li {
+  padding: 5px;
 }
 
 li,
 section a {
-    color: white;
-    list-style: none;
+  color: white;
+  list-style: none;
 }
 
 .main .d-flex {
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 .main .d-flex i {
-    color: rgba(252, 252, 252, 0.3);
+  color: rgba(252, 252, 252, 0.3);
 }
 
 .flash {
-    display: none;
+  display: none;
+  justify-content: center;
+}
+#message {
+  padding: 13px 5px 5px;
+  font-size: 14px;
 }
 
 #err {
-    display: none;
-    text-align: center;
-    color: red
+  display: none;
+  text-align: center;
+  color: red;
 }
 
 #feedback {
-    display: none;
+  display: none;
 }
 
 @media (min-width: 775px) {
-    .navPanel {
-        height: 90vh;
-        overflow-y: auto;
-    }
+  .navPanel {
+    height: 90vh;
+    overflow-y: auto;
+  }
 }

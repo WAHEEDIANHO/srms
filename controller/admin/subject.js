@@ -11,8 +11,8 @@ subject = (req, res) => {
 
 createSubject = (req, res) => {
   console.log(req.body);
-  conn
-    .then((db) => subjects.create(req.body))
+  subjects
+    .create(req.body)
     .then((resp) => {
       console.log(resp);
       res.json(resp);
