@@ -11,23 +11,19 @@ passport.use(
       passReqToCallback: true,
     },
     (req, email, pswrd, done) => {
-      console.log(email);
       Staff.findOne({ email: email })
         .then(
           (user) => {
-            console.log(user);
             if (!user) {
               const err = new Error("User didn't exist");
               done(err, err);
             }
             return done(null, user);
           },
-          (err) => {
-            console.log(err);
-          }
+          (err) => done(err, err)
         )
         .catch((err) => {
-          console.log(err);
+          done(err, err);
         });
     }
   )
@@ -38,19 +34,13 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  return done(null, id);
   Staff.findById(id)
-    .then((user) => {
-      return done(null, user);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    .then((user) => done(null, user))
+    .catch((err) => done(err, err));
 });
-exports.comfirmUser = (req, res, next) => {
-  console.log(req.user);
-  req.user ? next() : res.end("<h1>You are not authenticated</h1>");
-};
+
+exports.comfirmUser = (req, res, next) =>
+  req.user ? next() : res.redirect("/");
 exports.verifyUser = passport.authenticate("local-login");
 
 // module.exports = passport;

@@ -31,19 +31,15 @@ studentAdmission = (req, res) => {
 dostudentAdmission = (req, res) => {
   if (req.body.hasOwnProperty("fname")) {
     req.body.fname.toUpperCase();
-    console.log(req.body);
 
     students
       .create(req.body)
       .then((resp) => {
-        console.log(resp);
+        res.json(resp);
       })
       .catch((err) => {
         res.json(err);
-        console.log(err);
       });
-    // console.log(req.body)
-    res.json(req.body);
   } else {
     upload(req, res, (err) => {
       //------------Todo after successful upload----------------//
@@ -51,62 +47,66 @@ dostudentAdmission = (req, res) => {
         `${__dirname}/../../uploads/student/${req.file.filename}`,
         { cellDates: true }
       );
-      console.log("This is: " + wb.SheetNames);
 
       const ws = wb.Sheets["Student"];
-      // console.log(ws)
 
-      const data = xlsx.utils.sheet_to_json(ws);
-
-      // console.log(data)
-      (async () => {
-        const existuser = [];
-        for (x in data) {
-          const {
-            fullname,
-            dob,
-            gender,
-            sclass,
-            roll_id,
-            phone_no,
-            address,
-            email,
-          } = data[x];
-          const user = await students.findOne({
-            rollId: `SRM/2020/0${roll_id}`,
-          });
-
-          if (!user) {
-            console.log(roll_id);
-            const newStu = await students.create({
-              fname: fullname.toUpperCase(),
-              rollId: `SRM/2020/0${roll_id}`,
-              gender: gender,
-              sclass: sclass,
-              dob: dob,
-              phone_no: phone_no,
-              address: address,
-              email: email,
-            });
-
-            console.log(newStu);
-          } else {
-            existuser.push(user.fname);
-          }
-        }
-        if (existuser.length === 0) {
-          res.json("sucess");
-        } else {
-          const err = new Error();
-          err.status = 404;
-          err.message = existuser;
-          res.json(err);
-        }
-        // students.collection.drop();
+      if (!ws) {
+        const err = new Error();
+        err.status = 404;
+        err.message = "Invalid Document";
+        res.json(err);
         fs.unlinkSync(
           `${__dirname}/../../uploads/student/${req.file.filename}`
         );
-      })();
+        return err;
+      } else {
+        const data = xlsx.utils.sheet_to_json(ws);
+
+        (async () => {
+          const existuser = [];
+          for (x in data) {
+            const {
+              fullname,
+              dob,
+              gender,
+              sclass,
+              roll_id,
+              phone_no,
+              address,
+              email,
+            } = data[x];
+            const user = await students.findOne({
+              rollId: `SRM/2020/0${roll_id}`,
+            });
+
+            if (!user) {
+              const newStu = await students.create({
+                fname: fullname.toUpperCase(),
+                rollId: `SRM/2020/0${roll_id}`,
+                gender: gender,
+                sclass: sclass,
+                dob: dob,
+                phone_no: phone_no,
+                address: address,
+                email: email,
+              });
+            } else {
+              existuser.push(user.fname);
+            }
+          }
+          if (existuser.length === 0) {
+            res.json("sucess");
+          } else {
+            const err = new Error();
+            err.status = 404;
+            err.message = existuser;
+            res.json(err);
+          }
+          fs.unlinkSync(
+            `${__dirname}/../../uploads/student/${req.file.filename}`
+          );
+        })();
+      }
     });
   }
 };

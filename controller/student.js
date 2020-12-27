@@ -14,31 +14,25 @@ login = (req, res) => {
 };
 
 getResult = (req, res, next) => {
-  console.log(req.body);
-
   if (!req.body) {
-    console.log("u send an empty body request");
+    res.json({ err: "u didn't input anything" });
   } else {
     const { rollId, sclass } = req.body;
     students
       .findOne({ rollId: rollId })
       .then((student) => {
-        console.log(student.sclass === sclass);
         if (student.sclass === sclass) {
-          console.log(student);
           res.render("result", {
             student: student,
           });
         } else {
-          const err = new Error('Student doesn"t match rollID: ' + rollId);
-          next(err);
-          console.log(student);
+          const err = new Error();
+          err.status = 404;
+          err.message = 'Student class doesn"t match rollID: ' + rollId;
+          res.json(err);
         }
       })
-      .catch((err) => {
-        console.log(err);
-        next(err);
-      });
+      .catch((err) => next(err));
   }
 };
 

@@ -18,6 +18,10 @@ doLogin = (req, res) => {
   res.render("admin/admin");
 };
 
+logout = (req, res) => {
+  req.user ? req.session.destroy() && res.redirect("/") : res.redirect("/");
+};
+
 createAdmin = (req, res) => {
   console.log(req.body);
   req.body.pswrd = Staff.hashPswrd(req.body.pswrd);
@@ -29,6 +33,7 @@ createAdmin = (req, res) => {
 
 module.exports = {
   doLogin: doLogin,
+  logout: logout,
   verifyUser: verifyUser,
   createAdmin: createAdmin,
   subject: subject.subject,

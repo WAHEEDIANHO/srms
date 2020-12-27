@@ -10,7 +10,7 @@ const express = require("express"),
   student = require("../controller/student");
 
 const app = express();
-const port = 3030;
+const port = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +26,8 @@ app.use(
   })
 );
 //-------------DataBase------------------------------------------
-const url = "mongodb://localhost:27017/SRMS";
+const url =
+  "mongodb+srv://OGIDI:WAHEEDianho@cluster0.v6rr3.mongodb.net/SRM?retryWrites=true&w=majority";
 mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -57,6 +58,9 @@ app.post("/student/result", student.getResult);
 app.get("/admin/dashboard", authenticate.comfirmUser, admin.doLogin);
 app.post("/admin/dashboard", authenticate.verifyUser, admin.verifyUser);
 app.post("/crateadmin", admin.createAdmin);
+
+//admin logout
+app.get("/logout", admin.logout);
 
 //subject
 app.get("/admin/subject", authenticate.comfirmUser, admin.subject);
